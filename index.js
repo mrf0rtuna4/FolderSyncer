@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 const ProgressBar = require('progress');
+const { createSettings } = require('./settings');
 
 function copyFolderRecursiveSync(source, target, progressBar) {
   const files = fs.readdirSync(source);
@@ -118,4 +119,19 @@ function chooseMode() {
   });
 }
 
-chooseMode();
+const args = process.argv.slice(2);
+
+if (args.length === 3) {
+  const computerFolderPath = args[0];
+  const flashDriveFolderPath = args[1];
+  const syncIntervalMinutes = args[2];
+  const { createSettings } = require('./settings');
+  createSettings(computerFolderPath, flashDriveFolderPath, syncIntervalMinutes);
+
+  rl.question('Нажмите Enter, чтобы завершить программу...', () => {
+    rl.close();
+  });
+} else {
+  chooseMode();
+}
+

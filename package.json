@@ -1,6 +1,7 @@
 {
     "name": "folder-sync",
     "version": "1.0.0",
+    "type": "module",
     "description": "Application for folder synchronization",
     "main": "index.js",
     "bin": {
