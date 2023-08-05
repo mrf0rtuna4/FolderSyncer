@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const ProgressBar = require('progress');
 
-function copyFolderRecursiveSync(source, target) {
+function copyFolderRecursiveSync(source, target, progressBar) {
   const files = fs.readdirSync(source);
 
   if (!fs.existsSync(target)) {
@@ -18,8 +19,9 @@ function copyFolderRecursiveSync(source, target) {
       if (!fs.existsSync(targetPath)) {
         fs.copyFileSync(sourcePath, targetPath);
       }
+      progressBar.tick(stat.size);
     } else if (stat.isDirectory()) {
-      copyFolderRecursiveSync(sourcePath, targetPath);
+      copyFolderRecursiveSync(sourcePath, targetPath, progressBar);
     }
   });
 }
@@ -31,11 +33,37 @@ const rl = readline.createInterface({
 
 function syncFolders(computerFolderPath, flashDriveFolderPath) {
   try {
-    copyFolderRecursiveSync(computerFolderPath, flashDriveFolderPath);
+    const totalSize = getTotalSize(computerFolderPath);
+    const progressBar = new ProgressBar('  Загрузка [:bar] :percent :etas', {
+      complete: '=',
+      incomplete: ' ',
+      width: 30,
+      total: totalSize
+    });
+
+    copyFolderRecursiveSync(computerFolderPath, flashDriveFolderPath, progressBar);
     console.log('Синхронизация завершена успешно.');
   } catch (err) {
     console.error('Ошибка при синхронизации:', err);
   }
+}
+
+function getTotalSize(folderPath) {
+  let totalSize = 0;
+  const files = fs.readdirSync(folderPath);
+
+  files.forEach(function (file) {
+    const filePath = path.join(folderPath, file);
+    const stat = fs.statSync(filePath);
+
+    if (stat.isFile()) {
+      totalSize += stat.size;
+    } else if (stat.isDirectory()) {
+      totalSize += getTotalSize(filePath);
+    }
+  });
+
+  return totalSize;
 }
 
 function chooseMode() {

@@ -4,17 +4,16 @@
     "description": "Application for folder synchronization",
     "main": "index.js",
     "bin": {
-      "folder-sync-app": "./index.js"
+        "folder-sync-app": "./index.js"
     },
     "scripts": {
-      "start": "node index.js"
+        "start": "node index.js"
     },
     "author": "mr_f0rtuna4",
     "license": "MIT",
     "dependencies": {
-      "fs": "^0.0.1",
-      "path": "^0.12.7",
-      "readline": "^1.3.0"
+        "path": "^0.12.7",
+        "progress": "^2.0.3",
+        "readline": "^1.3.0"
     }
-  }
-  
+}
