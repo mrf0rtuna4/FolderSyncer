@@ -1,5 +1,5 @@
 {
-  "computerFolderPath": " ",
-  "flashDriveFolderPath": " ",
-  "syncIntervalMinutes": 0
+  "computerFolderPath": "C:/Your/path/here",
+  "flashDriveFolderPath": "E:/Outher/path/here",
+  "syncIntervalMinutes": 2 
 }
